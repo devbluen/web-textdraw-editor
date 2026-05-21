@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'GTASANormal';
+  src: url('./beckett_.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GTASANormal2';
+  src: url('./ahronbd.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GTASAClear';
+  src: url('./BankGothicMediumBT.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GTASABold';
+  src: url('./pricedownbl.ttf') format('truetype');
+}
