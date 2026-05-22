@@ -75,8 +75,8 @@ export function exportPawn(els, prefix) {
         const { tx, ty } = calcTextSize(el)
         lines.push(`    TextDrawTextSize(${ref}, ${tx.toFixed(1)}, ${ty.toFixed(1)});`)
       }
-      if (el.outline > 0)  lines.push(`    TextDrawSetOutline(${ref}, ${el.outline});`)
-      if (el.shadow > 0)   lines.push(`    TextDrawSetShadow(${ref}, ${el.shadow});`)
+      lines.push(`    TextDrawSetOutline(${ref}, ${el.outline});`)
+      lines.push(`    TextDrawSetShadow(${ref}, ${el.shadow});`)
       lines.push(`    TextDrawBackgroundColor(${ref}, ${bg});`)
       if (el.proportional) lines.push(`    TextDrawSetProportional(${ref}, 1);`)
       if (el.selectable)   lines.push(`    TextDrawSetSelectable(${ref}, 1);`)
