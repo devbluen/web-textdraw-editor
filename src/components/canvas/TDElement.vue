@@ -44,7 +44,7 @@
       <div class="sel-outline" :class="{ active: selected }" />
 
       <!-- Name label -->
-      <div v-if="selected" class="name-label">{{ el.locked ? '🔒 ' : '' }}{{ el.name }}</div>
+      <div v-if="selected" class="name-label" :style="nameLabelStyle">{{ el.locked ? '🔒 ' : '' }}{{ el.name }}</div>
 
       <!-- Resize handle — never show on locked -->
       <div
@@ -87,6 +87,13 @@
     if (!lib || !tex) return null
     return localSpriteImagePath(lib, tex)
   })
+
+  const nameLabelStyle = computed(() => ({
+    fontSize: Math.round(3 * props.zoom) + 'px',
+    padding: `0px ${Math.round(3 * props.zoom)}px`,
+    top: -Math.round(3 * props.zoom) + 'px',
+    borderRadius: Math.round(0.5 * props.zoom) + 'px',
+  }))
 
   function onImgError() {
     if (!localPath.value) {
@@ -328,22 +335,24 @@
     border-radius: 1px;
   }
   .sel-outline.active {
-    border-color: #0a246a;
+    border: 3px dashed #0a246a;
     box-shadow: 0 0 0 1px rgba(10,36,106,0.2);
   }
   .name-label {
     position: absolute;
-    top: -14px;
+    top: -16px;
     left: 0;
     font-family: 'Tahoma', sans-serif;
-    font-size: 8px;
-    color: #0a246a;
-    background: #ece9d8;
-    padding: 1px 4px;
-    border: 1px solid #a0a0a0;
+    font-size: 9px;
+    font-weight: 700;
+    color: #000000;
+    background: #ffffffd9;
+    padding: 1px 5px;
+    border-radius: 2px;
     white-space: nowrap;
     pointer-events: none;
     z-index: 20;
+    letter-spacing: 0.3px;
   }
   .resize-handle {
     position: absolute;
