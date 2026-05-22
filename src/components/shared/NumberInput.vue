@@ -6,7 +6,7 @@
     :min="min"
     :max="max"
     :step="step"
-    @change="e => emit('update:modelValue', parseFloat(e.target.value) || 0)"
+    @input="e => emit('update:modelValue', parseFloat(e.target.value) || 0)"
   />
 </template>
 
