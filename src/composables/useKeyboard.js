@@ -1,7 +1,9 @@
 import { onMounted, onUnmounted } from 'vue'
 
-export function useKeyboard({ undo, redo, duplicate, selectAll, deleteSelected, clearSelection, deleteRef, nudgeEls, nudgeRef, selRef }) {
-  function onKeyDown(e) {
+export function useKeyboard({ undo, redo, duplicate, selectAll, deleteSelected, clearSelection, deleteRef, nudgeEls, nudgeRef, selRef, zoomBy })
+{
+  function onKeyDown(e)
+  {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
 
     const ctrl = e.ctrlKey || e.metaKey
@@ -29,6 +31,19 @@ export function useKeyboard({ undo, redo, duplicate, selectAll, deleteSelected, 
     }
   }
 
-  onMounted(() => window.addEventListener('keydown', onKeyDown))
-  onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
+  function onWheel(e)
+  {
+    if (!e.ctrlKey) return
+    e.preventDefault()
+    zoomBy(e.deltaY < 0 ? 25 : -25)
+  }
+
+  onMounted(() => {
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('wheel', onWheel, { passive: false })
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', onKeyDown)
+    window.removeEventListener('wheel', onWheel)
+  })
 }

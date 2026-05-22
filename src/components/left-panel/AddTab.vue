@@ -15,102 +15,42 @@
     <div class="shortcut-box">
       <div class="shortcut-list">
 
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Ctrl</kbd>
-            <span>+</span>
-            <kbd>Z</kbd>
-            <span>/</span>
-            <kbd>Y</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Undo / Redo
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Ctrl</kbd>
-            <span>+</span>
-            <kbd>D</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Duplicate
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Ctrl</kbd>
-            <span>+</span>
-            <kbd>A</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Select All
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Del</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Delete
-          </div>
-        </div>
-
-        <div class="shortcut-divider"></div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>↑</kbd>
-            <kbd>↓</kbd>
-            <kbd>←</kbd>
-            <kbd>→</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Nudge
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Shift</kbd>
-            <span>+</span>
-            <kbd>Arrows</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Move 10px
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>Drag</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Multi Select
-          </div>
-        </div>
-
-        <div class="shortcut-row">
-          <div class="shortcut-keys">
-            <kbd>RMB</kbd>
-          </div>
-
-          <div class="shortcut-desc">
-            Context Menu
-          </div>
-        </div>
-
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>Z</kbd><span></span></div>
+        <div class="shortcut-desc">Undo</div>
       </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>Y</kbd></div>
+        <div class="shortcut-desc">Redo</div>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>D</kbd></div>
+        <div class="shortcut-desc">Duplicate</div>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>A</kbd></div>
+        <div class="shortcut-desc">Select All</div>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>Scroll</kbd></div>
+        <div class="shortcut-desc">Zoom</div>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Del</kbd></div>
+        <div class="shortcut-desc">Delete</div>
+      </div>
+      <div class="shortcut-divider"></div>
+
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>Drag</kbd></div>
+        <div class="shortcut-desc">Multi Select</div>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><kbd>RMB</kbd></div>
+        <div class="shortcut-desc">Context Menu</div>
+      </div>
+
+    </div>
     </div>
   </div>
 </template>

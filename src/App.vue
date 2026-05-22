@@ -128,25 +128,27 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { CW, CH } from './constants/canvas'
 
 import { useElementStore } from './composables/useElementStore'
-import { useSnap }         from './composables/useSnap'
-import { useDrag }         from './composables/useDrag'
-import { useResize }       from './composables/useResize'
-import { useMarquee }      from './composables/useMarquee'
-import { useRefDrag }      from './composables/useRefDrag'
-import { useBgImage }      from './composables/useBgImage'
-import { useRefImages }    from './composables/useRefImages'
-import { useValidation }   from './composables/useValidation'
+import { useSnap } from './composables/useSnap'
+import { useDrag } from './composables/useDrag'
+import { useResize } from './composables/useResize'
+import { useMarquee } from './composables/useMarquee'
+import { useRefDrag } from './composables/useRefDrag'
+import { useBgImage } from './composables/useBgImage'
+import { useRefImages } from './composables/useRefImages'
+import { useValidation } from './composables/useValidation'
+import { useKeyboard } from './composables/useKeyboard'
+
 
 import { exportPawn } from './utils/exportPawn'
 import { importPawn } from './utils/importPawn'
 
-import LeftPanel          from './components/left-panel/LeftPanel.vue'
-import RightPanel         from './components/right-panel/RightPanel.vue'
-import DesignerCanvas     from './components/canvas/DesignerCanvas.vue'
-import ExportModal        from './components/modals/ExportModal.vue'
-import JsonModal          from './components/modals/JsonModal.vue'
-import ContextMenu        from './components/modals/ContextMenu.vue'
-import NotificationStack  from './components/modals/NotificationStack.vue'
+import LeftPanel from './components/left-panel/LeftPanel.vue'
+import RightPanel from './components/right-panel/RightPanel.vue'
+import DesignerCanvas from './components/canvas/DesignerCanvas.vue'
+import ExportModal from './components/modals/ExportModal.vue'
+import JsonModal from './components/modals/JsonModal.vue'
+import ContextMenu from './components/modals/ContextMenu.vue'
+import NotificationStack from './components/modals/NotificationStack.vue'
 
 const store      = useElementStore()
 const snapUtil   = useSnap()
@@ -454,44 +456,37 @@ function onReorder(dragId, targetId) {
   store.commitEls(next)
 }
 
-function onKeyDown(e) {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-  const ctrl = e.ctrlKey || e.metaKey
-  if (ctrl && e.key === 'z') { e.preventDefault(); store.undo() }
-  if (ctrl && e.key === 'y') { e.preventDefault(); store.redo() }
-  if (ctrl && e.key === 'd') { e.preventDefault(); store.duplicate() }
-  if (ctrl && e.key === 'a') { e.preventDefault(); store.selectAll() }
-  if (e.key === 'Escape') { store.clearSelection(); refImages.clearSelection() }
-  if (e.key === 'Delete' || e.key === 'Backspace') {
-    if (refImages.selRef.value) refImages.remove(refImages.selRef.value)
-    else store.deleteSelected()
-  }
-  const step = e.shiftKey ? 10 : 1
-  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) {
-    e.preventDefault()
-    const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0
-    const dy = e.key === 'ArrowUp'   ? -step : e.key === 'ArrowDown'  ? step : 0
-    if (refImages.selRef.value) {
-      refImages.update(refImages.selRef.value, {
-        x: (selRefObj.value?.x ?? 0) + dx,
-        y: (selRefObj.value?.y ?? 0) + dy,
-      })
-    } else {
-      const next = store.els.value.map(el => {
-        if (!store.selected.value.has(el.id)) return el
-        return {
-          ...el,
-          x: Math.max(0, Math.min(CW - el.w, el.x + dx)),
-          y: Math.max(0, Math.min(CH - el.h, el.y + dy)),
-        }
-      })
-      store.commit(next)
-    }
-  }
-}
 
-onMounted(() => window.addEventListener('keydown', onKeyDown))
-onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
+
+useKeyboard({
+  undo: () => store.undo(),
+  redo: () => store.redo(),
+  duplicate: () => store.duplicate(),
+  selectAll: () => store.selectAll(),
+  deleteSelected: () => store.deleteSelected(),
+  clearSelection: () => { store.clearSelection(); refImages.clearSelection() },
+  deleteRef: (id) => refImages.remove(id),
+  nudgeEls: (dx, dy) => {
+    const next = store.els.value.map(el => {
+      if (!store.selected.value.has(el.id)) return el
+      return {
+        ...el,
+        x: Math.max(0, Math.min(CW - el.w, el.x + dx)),
+        y: Math.max(0, Math.min(CH - el.h, el.y + dy)),
+      }
+    })
+    store.commit(next)
+  },
+  nudgeRef: (id, dx, dy) => refImages.update(id, {
+    x: (selRefObj.value?.x ?? 0) + dx,
+    y: (selRefObj.value?.y ?? 0) + dy,
+  }),
+  selRef: refImages.selRef,
+  zoomBy: (delta) => {
+    zoom.value = Math.min(5, Math.max(1, zoom.value + delta / 100))
+  }
+})
+
 </script>
 
 <style>
