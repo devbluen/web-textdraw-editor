@@ -1,38 +1,91 @@
-# textdraw-editor
+# TextDraw Designer
 
-This template should help get you started developing with Vue 3 in Vite.
+A web-based visual editor for creating SA-MP and open.mp TextDraws. Design your HUD directly in the browser and export ready-to-paste Pawn code, no server required.
 
-## Recommended IDE Setup
+## Why this exists
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Most TextDraw editors are either in-game tools that require running a SA-MP server, or basic web tools with limited features. This one runs entirely in the browser, has a proper layer system, supports reference images for tracing, and exports clean Pawn code for both Global and Player TextDraws.
 
-## Recommended Browser Setup
+---
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Screenshots
 
-## Customize configuration
+### Editor
+![Full editor view](https://i.imgur.com/pJ2rnWe.gif)
+The main canvas. Elements can be dragged, resized and selected individually or in a group. The left panel handles adding and organizing elements, the right panel shows properties for whatever is selected.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
+### Sprite Browser
 
-## Project Setup
+<div align="center">
+  <img src="https://i.imgur.com/6P53HGI.png" height="300"/>
+</div>
+Browse all known GTA SA sprite libraries by name or filter by library.
 
-```sh
+---
+
+### Pawn Export
+![Export modal](https://i.imgur.com/OdyZPtc.png)
+
+The export generates clean, ready-to-paste pawn code.
+
+---
+
+## Getting Started
+
+**Requirements:** Node.js 18 or higher
+```bash
+git clone https://github.com/San-Andreas-Online/textdraw-designer
+cd textdraw-designer
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+Open `http://localhost:5173` in your browser and editing.
 
-```sh
-npm run build
-```
+---
+
+## Features
+
+### Canvas & Editing
+- Snap-to-grid with configurable grid size
+- Drag selection for selecting multiple elements at once
+- Resize any element with the corner handle
+- Nudge selected elements with arrow keys
+- Widescreen mode toggle for 16:9 layouts
+  
+### Element Types
+All standard SA-MP TextDraw types are supported:
+- **Label**
+- **Button**
+- **Box**
+- **Sprite**
+  
+### Layers & Organization
+- Layer panel showing all elements in order
+- Drag-and-drop layer reordering
+- Toggle visibility and lock per element
+- Bring to front / send to back
+  
+### Export & Import
+- Export to Pawn code. Global TD (`TextDraw`) or Player TD (`PlayerTextDraw`)
+- Import from existing `JSON` projects or `pawn code` textdraws
+
+### Reference Images
+- Upload images as a overlay on the canvas
+- Drag, resize, and adjust opacity per image
+- Lock reference images so they don't get in the way while editing
+- Useful for tracing mockups or screenshots
+  
+---
+
+## Tech Stack
+- [Vue 3](https://vuejs.org/) UI framework
+- [Vite](https://vitejs.dev/) build tool
+- [Pinia](https://pinia.vuejs.org/) state management
+
+---
+
+
+## License
+MIT
