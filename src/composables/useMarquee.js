@@ -1,5 +1,11 @@
 import { ref } from 'vue'
 
+function getVisualX(el) {
+  if (el.align === 1) return el.x - el.w / 2
+  if (el.align === 2) return el.x - el.w
+  return el.x
+}
+
 export function useMarquee(els, selected) {
   const selecting = ref(false)
   const marquee = ref(null)
@@ -34,7 +40,10 @@ export function useMarquee(els, selected) {
 
     if (w > 4 || h > 4) {
       const hits = els.value
-        .filter(el => el.x < x + w && el.x + el.w > x && el.y < y + h && el.y + el.h > y)
+        .filter(el => {
+          const vx = getVisualX(el)
+          return vx < x + w && vx + el.w > x && el.y < y + h && el.y + el.h > y
+        })
         .map(el => el.id)
       selected.value = new Set(hits)
     }
