@@ -2,7 +2,9 @@
   <transition name="slide">
     <div class="right-panel" v-if="selOne || selRefObj || selArr.length > 1">
       <div class="props-area">
-        <div class="section-title">Properties</div>
+        <div class="section-title">
+          {{ selArr.length > 1 ? `Multi Select (${selArr.length} elements)` : 'Properties' }}
+        </div>
 
         <TDProperties
           v-if="selOne"
