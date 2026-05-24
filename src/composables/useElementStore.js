@@ -32,18 +32,26 @@ export function useElementStore() {
     selected.value = new Set()
   }
 
-  function duplicate() {
+  function duplicate()
+  {
     if (!selected.value.size) return
     const copies = selArr.value
       .map(id => els.value.find(e => e.id === id))
       .filter(Boolean)
-      .map(el => ({
-        ...JSON.parse(JSON.stringify(el)),
-        id: Math.random().toString(36).slice(2, 9),
-        x: el.x + 10,
-        y: el.y + 10,
-        name: el.name + '_c',
-      }))
+      .map(el => {
+        const base = el.name.replace(/\(\d+\)$/, '').trimEnd()
+        const nums = els.value
+          .map(e => { const m = e.name.match(/^(.+?)\((\d+)\)$/) ; return m && m[1] === base ? +m[2] : 0 })
+          .filter(n => n > 0)
+        const next = nums.length ? Math.max(...nums) + 1 : 1
+        return {
+          ...JSON.parse(JSON.stringify(el)),
+          id: Math.random().toString(36).slice(2, 9),
+          x: el.x + 10,
+          y: el.y + 10,
+          name: `${base}(${next})`,
+        }
+      })
     const next = [...els.value, ...copies]
     commit(next)
     selected.value = new Set(copies.map(e => e.id))
