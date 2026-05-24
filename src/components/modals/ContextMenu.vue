@@ -11,15 +11,29 @@
         <input type="checkbox" v-model="localGrid" @change="emit('grid', localGrid)" />
         Grid
       </label>
-      <label class="ctx-item cb-row">
-        <input type="checkbox" v-model="localSnap" @change="emit('snap', localSnap)" />
-        Snap
-      </label>
       <label class="ctx-item cb-row" @mousedown.stop>
         <input type="checkbox" :checked="widescreen" @change="emit('widescreen', $event.target.checked)" />
         Widescreen
       </label>
       <div class="ctx-sep" />
+
+      <!-- Snap submenu -->
+      <div class="ctx-item has-sub">
+        <span>Snap</span>
+        <span class="arrow">></span>
+        <div class="ctx-sub">
+          <label class="ctx-item cb-row" @mousedown.stop>
+            <input type="checkbox" :checked="snapMode === 'grid'" @change="onSnapMode('grid', $event.target.checked)" />
+            Snap to Grid
+          </label>
+          <label class="ctx-item cb-row" @mousedown.stop>
+            <input type="checkbox" :checked="snapMode === 'element'" @change="onSnapMode('element', $event.target.checked)" />
+            Snap to Element
+          </label>
+        </div>
+      </div>
+
+      <!-- Grid Size submenu -->
       <div class="ctx-item has-sub" ref="subTrigger">
         <span>Grid Size</span>
         <span class="arrow">></span>
@@ -70,19 +84,22 @@ const props = defineProps({
   pos: Object,
   isCanvas: Boolean,
   showGrid: Boolean,
-  snap: Boolean,
+  snapMode: String,
   gridSize: Number,
   prefix: String,
   widescreen: Boolean,
 })
 
-const emit = defineEmits(['action', 'close', 'grid', 'snap', 'gridSize', 'update:prefix', 'widescreen'])
+const emit = defineEmits(['action', 'close', 'grid', 'snapMode', 'gridSize', 'update:prefix', 'widescreen'])
 
 const localGrid = ref(props.showGrid)
-const localSnap = ref(props.snap)
 
 watch(() => props.showGrid, v => localGrid.value = v)
-watch(() => props.snap,     v => localSnap.value = v)
+
+function onSnapMode(mode, checked) {
+  // mutually exclusive: checking one unchecks the other; unchecking sets null
+  emit('snapMode', checked ? mode : null)
+}
 
 const items = [
   { key: 'dup',        label: 'Duplicate'   },
@@ -91,8 +108,7 @@ const items = [
   { key: 'pasteStyle', label: 'Paste Style' },
 ]
 
-function onClickOutside(e)
-{
+function onClickOutside(e) {
   if (!e.target.closest('.ctx')) emit('close')
 }
 
@@ -142,7 +158,6 @@ onUnmounted(() => window.removeEventListener('mousedown', onClickOutside, true))
 }
 .arrow { font-size: 8px; color: var(--text2); margin-left: 8px; }
 
-/* submenu hidden by default, shown on parent hover */
 .ctx-sub {
   display: none;
   position: absolute;
@@ -153,19 +168,17 @@ onUnmounted(() => window.removeEventListener('mousedown', onClickOutside, true))
   box-shadow: 2px 4px 12px rgba(0,0,0,0.6);
   padding: 2px 0;
   border-radius: 3px;
-  min-width: 80px;
+  min-width: 130px;
   z-index: 10000;
   overflow: visible;
 }
-
-.arrow { font-size: 8px; color: #ffffff; margin-left: 8px; }
 
 .has-sub:hover .ctx-sub {
   display: block;
 }
 
 .ctx-row { display:flex; align-items:center; gap:6px; padding:4px 12px; }
-.ctx-label { font-size:10px; font-weight:600; text-transform:none; letter-spacing:0; color:var(--text1); width:50px; text-align:left; }
+.ctx-label { font-size:10px; font-weight:600; color:var(--text1); width:50px; text-align:left; }
 .ctx-input { font-family:'Tahoma',sans-serif; font-size:11px; padding:2px 2px; background:var(--bg3); border:1px solid var(--bg3); border-radius:3px; color:var(--text0); outline:none; width:65px; }
 .ctx-input:focus { border-color:var(--accent); }
 </style>

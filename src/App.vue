@@ -74,6 +74,7 @@
           :bgImage="bgImg.bgImage.value"
           :bgOpacity="bgOpacity"
           :widescreen="widescreen"
+          :snapLines="snapLines"
           @canvas-mousedown="onCanvasMD"
           @el-mousedown="onElMD"
           @el-resize-start="onElRS"
@@ -82,6 +83,17 @@
           @contextmenu="onContextMenu"
           @sprite-drop="onSpriteDrop"
         />
+        <svg class="snap-lines" :viewBox="`0 0 ${CW} ${CH}`"
+          :style="{ width: CW * zoom + 'px', height: CH * zoom + 'px' }">
+        <template v-for="line in snapLines" :key="line.axis + line.value">
+          <line v-if="line.axis === 'x'"
+            :x1="line.value" y1="0" :x2="line.value" :y2="CH"
+            stroke="#C80041" stroke-width="0.5" stroke-dasharray="3 2" />
+          <line v-else
+            x1="0" :y1="line.value" :x2="CW" :y2="line.value"
+            stroke="#C80041" stroke-width="0.5" stroke-dasharray="3 2" />
+        </template>
+      </svg>
       </div>
 
       <RightPanel
@@ -106,7 +118,7 @@
       :pos="ctxPos"
       :isCanvas="ctxIsCanvas"
       :showGrid="showGrid"
-      :snap="snap"
+      :snapMode="snapMode"
       :gridSize="gridSize"
       :prefix="prefix"
       :isLocked="selOne?.locked ?? false"
@@ -116,7 +128,7 @@
       @action="onCtxAction"
       @close="ctxPos = null"
       @grid="showGrid = $event"
-      @snap="snap = $event"
+      @snapMode="snapMode = $event"
       @gridSize="gridSize = $event"
       @update:prefix="prefix = $event"
     />
@@ -161,13 +173,14 @@ const bgImg      = useBgImage()
 const refImages  = useRefImages()
 const validation = useValidation(store.els)
 
-const drag    = useDrag(store.els, store.selected, snapUtil.snapV, CW, CH)
+const drag = useDrag(store.els, store.selected, snapUtil.snapV, CW, CH, snapUtil.snapMode, snapUtil.snapElement, snapUtil.clearSnapLines)
 const resize  = useResize(store.els, snapUtil.snapV)
 const marquee = useMarquee(store.els, store.selected)
 const refDrag = useRefDrag(refImages.refs, snapUtil.snapV)
 
-const snap     = snapUtil.snapEnabled
-const gridSize = snapUtil.gridSize
+const snapMode  = snapUtil.snapMode
+const gridSize  = snapUtil.gridSize
+const snapLines = snapUtil.snapLines
 
 const prefix     = ref('td')
 const zoom       = ref(2)
@@ -299,7 +312,10 @@ function onCtxAction(action) {
 }
 
 function onAddElement(type) {
-  store.addEl(type, prefix.value)
+  store.addEl(type, prefix.value, {
+    x: snapUtil.snapV(100),
+    y: snapUtil.snapV(100),
+  })
   refImages.clearSelection()
 }
 

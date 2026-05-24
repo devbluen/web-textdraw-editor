@@ -43,6 +43,22 @@
 
         <MarqueeSelect :marquee="marquee" :zoom="zoom" />
 
+        <svg
+          style="position:absolute;inset:0;pointer-events:none;z-index:50;"
+          :viewBox="`0 0 ${CW} ${CH}`"
+          :width="CW * props.zoom"
+          :height="CH * props.zoom"
+        >
+          <template v-for="line in snapLines" :key="line.axis + line.value">
+            <line v-if="line.axis === 'x'"
+              :x1="line.value" y1="0" :x2="line.value" :y2="CH"
+              stroke="#C80041" stroke-width="0.5" stroke-dasharray="3 2" />
+            <line v-else
+              x1="0" :y1="line.value" :x2="CW" :y2="line.value"
+              stroke="#C80041" stroke-width="0.5" stroke-dasharray="3 2" />
+          </template>
+        </svg>
+
         <!-- Teleport target: selection outlines, name labels, resize handles always render here on top -->
         <div id="selection-overlay" style="position:absolute;inset:0;pointer-events:none;z-index:9999;" />
       </div>
@@ -73,6 +89,7 @@ const props = defineProps({
   bgImage:   { type: String,  default: null },
   bgOpacity: { type: Number,  default: 100 },
   widescreen: { type: Boolean, default: false },
+  snapLines: { type: Array, default: () => [] },
 })
 
 const emit = defineEmits([
