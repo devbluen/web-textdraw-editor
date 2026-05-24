@@ -505,7 +505,7 @@ useKeyboard({
   }),
   selRef: refImages.selRef,
   zoomBy: (delta) => {
-    zoom.value = Math.min(5, Math.max(1, zoom.value + delta / 100))
+    zoom.value = Math.min(6, Math.max(1, zoom.value + delta / 100))
   }
 })
 
