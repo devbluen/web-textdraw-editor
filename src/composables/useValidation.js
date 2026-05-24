@@ -12,7 +12,7 @@ export function useValidation(els) {
       if (el.x < 0 || el.y < 0 || el.x + el.w > CW || el.y + el.h > CH)
         w.push({ type: 'warn', msg: `${el.name}: out of bounds` })
 
-      if ((el.type === 'label' || el.type === 'button') && !el.text)
+      if ((el.type === 'label') && !el.text)
         w.push({ type: 'warn', msg: `${el.name}: empty text` })
 
       if (el.type === 'sprite' && !el.text.includes(':'))

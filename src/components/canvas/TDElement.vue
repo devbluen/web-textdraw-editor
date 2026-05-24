@@ -22,14 +22,6 @@
         <div v-if="!spritePath || imgFailed" class="sprite-fallback">{{ el.text }}</div>
       </div>
 
-      <!-- Progress bar -->
-      <div v-else-if="el.type === 'progress'" class="fill progress-wrap" :style="progressWrapStyle">
-        <div class="progress-fill" :style="progressFillStyle" />
-      </div>
-
-      <!-- Hitbox -->
-      <div v-else-if="el.type === 'hitbox'" class="fill" :style="hitboxStyle" />
-
       <!-- Box / Line -->
       <div v-else-if="el.type === 'box' || el.type === 'line'" class="fill text-el" :style="textWrapStyle">
         <div v-if="wrappedLines && wrappedLines.length > 1" class="wrapped-text">
@@ -38,7 +30,7 @@
         <span v-else :style="textStyle">{{ el.text === '_' ? '' : el.text }}</span>
       </div>
 
-      <!-- Label / Button -->
+      <!-- Label -->
       <div v-else class="fill text-el" :style="textWrapStyle">
         <div v-if="wrappedLines && wrappedLines.length > 1" class="wrapped-text">
           <span v-for="(line, i) in wrappedLines" :key="i" :style="textStyle" class="wrapped-line">{{ line }}</span>
@@ -185,7 +177,7 @@
   const FONT_BASELINE = [-0.057, -0.08, 0.2, 0.14, 0]
 
   const wrappedLines = computed(() => {
-    if (props.el.type !== 'label' && props.el.type !== 'button' && props.el.type !== 'box') return null
+    if (props.el.type !== 'label' && props.el.type !== 'box') return null
     const font = FONTS[props.el.font] || FONTS[0]
     const yScale = FONT_Y_SCALE[props.el.font] ?? 9.0
     const xScale = FONT_X_SCALE[props.el.font] ?? 1.0
@@ -230,7 +222,7 @@
   const FONT_OFFSET_W = [0, 0, 0, 0, 0]
 
   const isText = computed(() =>
-    props.el.type === 'label' || props.el.type === 'button'
+    props.el.type === 'label'
   )
 
   const wrapperStyle = computed(() => {
@@ -241,7 +233,7 @@
     const h = props.el.h * props.zoom
     const isBox = props.el.type === 'box'
     const isSprite = props.el.type === 'sprite'
-    const isText2 = props.el.type === 'label' || props.el.type === 'button'
+    const isText2 = props.el.type === 'label'
     const align = props.el.align ?? 0
     const fontOffsetY = isText2 ? ((FONT_OFFSET_Y[props.el.font]?.[align]) ?? 0) * props.zoom : 0
     const fontOffsetX = isText2 ? ((FONT_OFFSET_X[props.el.font]?.[align]) ?? 0) * props.zoom : 0
