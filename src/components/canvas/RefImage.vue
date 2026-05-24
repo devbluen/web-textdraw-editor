@@ -61,6 +61,7 @@ function onResizeStart(e) {
 .ref-image {
   position: absolute;
   box-sizing: border-box;
+  pointer-events: all;
 }
 .ref-img {
   width: 100%;

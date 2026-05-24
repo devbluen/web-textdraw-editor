@@ -351,6 +351,7 @@
   <style scoped>
   .td-element {
     position: absolute;
+    pointer-events: all;
   }
   .fill {
     width: 100%;

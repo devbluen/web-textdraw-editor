@@ -170,4 +170,7 @@ defineExpose({ canvasPos })
   cursor: se-resize;
   pointer-events: all;
 }
+.drop-layer {
+  pointer-events: none;
+}
 </style>
