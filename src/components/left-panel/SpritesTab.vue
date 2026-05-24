@@ -7,6 +7,11 @@
     <div class="font-dropdown" v-if="libOpen">
     <div
       class="font-option"
+      :class="{ active: filterLib === '' }"
+      @mousedown.prevent="filterLib = ''; libOpen = false"
+    >All Libraries</div>
+    <div
+      class="font-option"
       v-for="lib in libs"
       :key="lib"
       :class="{ active: filterLib === lib }"
@@ -42,15 +47,18 @@
 
 <script setup>
 import { KNOWN_SPRITES, spriteImagePath } from '../../constants/sprites'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const libOpen = ref(false)
 const emit = defineEmits(['insert-sprite', 'sprites-loaded'])
 
-const search = ref('')
-const filterLib = ref('')
-const selected = ref(null)
+const search    = ref(localStorage.getItem('sprite_search') ?? '')
+const filterLib = ref(localStorage.getItem('sprite_filterLib') ?? '')
+const selected  = ref(null)
+
+watch(search,    v => localStorage.setItem('sprite_search', v))
+watch(filterLib, v => localStorage.setItem('sprite_filterLib', v))
+
 const userImages = ref({})
 
 const libs = computed(() => [...new Set(KNOWN_SPRITES.map(s => s.lib))])
