@@ -28,7 +28,8 @@ export function useMarquee(els, selected) {
     }
   }
 
-  function stop(pos) {
+  function stop(pos)
+  {
     if (!selecting.value) return
     selecting.value = false
 
@@ -42,7 +43,13 @@ export function useMarquee(els, selected) {
       const hits = els.value
         .filter(el => {
           const vx = getVisualX(el)
-          return vx < x + w && vx + el.w > x && el.y < y + h && el.y + el.h > y
+          const vw = Math.abs(el.w)
+          const vh = Math.abs(el.h)
+          const elL = vx + Math.min(0, el.w)
+          const elR = vx + Math.max(0, el.w)
+          const elT = el.y + Math.min(0, el.h)
+          const elB = el.y + Math.max(0, el.h)
+          return elL < x + w && elR > x && elT < y + h && elB > y
         })
         .map(el => el.id)
       selected.value = new Set(hits)
@@ -50,6 +57,5 @@ export function useMarquee(els, selected) {
 
     marquee.value = null
   }
-
   return { selecting, marquee, start, move, stop }
 }
