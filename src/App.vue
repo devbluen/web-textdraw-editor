@@ -174,7 +174,7 @@ const refImages  = useRefImages()
 const validation = useValidation(store.els)
 
 const drag = useDrag(store.els, store.selected, snapUtil.snapV, CW, CH, snapUtil.snapMode, snapUtil.snapElement, snapUtil.clearSnapLines)
-const resize  = useResize(store.els, snapUtil.snapV)
+const resize = useResize(store.els, snapUtil.snapV, snapUtil.snapResize, snapUtil.clearSnapLines)
 const marquee = useMarquee(store.els, store.selected)
 const refDrag = useRefDrag(refImages.refs, snapUtil.snapV)
 
