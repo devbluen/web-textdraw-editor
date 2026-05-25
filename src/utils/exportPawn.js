@@ -64,12 +64,8 @@ export function exportPawn(els, prefix) {
     } else {
       lines.push(`    ${ref} = TextDrawCreate(${el.x.toFixed(1)}, ${el.y.toFixed(1)}, "${txt}");`)
       lines.push(`    TextDrawFont(${ref}, ${el.font});`)
-      if (['box', 'line', 'progress', 'hitbox'].includes(el.type)) {
-        const lY = parseFloat((el.h * 0.1154).toFixed(3))
-        lines.push(`    TextDrawLetterSize(${ref}, 0.000, ${lY});`)
-      } else {
-        lines.push(`    TextDrawLetterSize(${ref}, ${el.letterX.toFixed(3)}, ${el.letterY.toFixed(3)});`)
-      }
+      const exportLY = el.h < 0 ? -Math.abs(el.letterY) : el.letterY
+      lines.push(`    TextDrawLetterSize(${ref}, ${el.letterX.toFixed(3)}, ${exportLY.toFixed(3)});`)
       lines.push(`    TextDrawColour(${ref}, ${col});`)
       lines.push(`    TextDrawAlignment(${ref}, ${el.align + 1});`)
       if (el.useBox) {
@@ -105,12 +101,8 @@ export function exportPawn(els, prefix) {
     } else {
       lines.push(`    ${ref} = CreatePlayerTextDraw(playerid, ${el.x.toFixed(1)}, ${el.y.toFixed(1)}, "${txt}");`)
       lines.push(`    PlayerTextDrawFont(playerid, ${ref}, ${el.font});`)
-      if (['box', 'line', 'progress', 'hitbox'].includes(el.type)) {
-        const lY = parseFloat((el.h * 0.1154).toFixed(3))
-        lines.push(`    PlayerTextDrawLetterSize(playerid, ${ref}, 0.000, ${lY});`)
-      } else {
-        lines.push(`    PlayerTextDrawLetterSize(playerid, ${ref}, ${el.letterX.toFixed(3)}, ${el.letterY.toFixed(3)});`)
-      }
+      const exportLY = el.h < 0 ? -Math.abs(el.letterY) : el.letterY
+      lines.push(`    PlayerTextDrawLetterSize(playerid, ${ref}, ${el.letterX.toFixed(3)}, ${exportLY.toFixed(3)});`)
       lines.push(`    PlayerTextDrawColour(playerid, ${ref}, ${col});`)
       lines.push(`    PlayerTextDrawAlignment(playerid, ${ref}, ${el.align + 1});`)
       if (el.useBox) {

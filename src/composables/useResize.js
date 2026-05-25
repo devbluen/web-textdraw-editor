@@ -30,7 +30,8 @@ export function useResize(els, selected, snapV, snapResize, clearSnapLines)
 
     els.value = els.value.map(el => {
       if (!selected.value.has(el.id)) return el
-      return { ...el, w: el.w + dw, h: el.h + dh }
+      const newH = el.h + dh
+      return { ...el, w: el.w + dw, h: newH, letterY: parseFloat((Math.abs(newH) / 9.5).toFixed(3)) }
     })
   }
 
