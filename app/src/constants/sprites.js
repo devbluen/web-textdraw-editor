@@ -553,5 +553,5 @@ export function spriteImagePath(lib, tex) {
 }
 
 export function localSpriteImagePath(lib, tex) {
-  return `/src/resources/sprites/${lib}/${tex}.png`;
+  return `src/resources/sprites/${lib}/${tex}.png`;
 }
