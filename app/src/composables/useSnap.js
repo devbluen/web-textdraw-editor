@@ -103,7 +103,7 @@ export function useSnap() {
     }
 
     if (bestX) lines.push({ axis: 'x', value: bestX.line })
-    if (bestY) lines.push({ axis: 'y', value: bestY.line })
+    if (bestY) lines.push({ axis: 'y', value: bestY.line + (vel.y - el.y) })
     snapLines.value = lines
 
     return {
