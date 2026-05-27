@@ -14,6 +14,7 @@
               <span class="toggle-thumb" />
             </button>
           </label>
+          <button class="btn" @click.stop="copyCode">Copy</button>
           <button class="btn icon-btn" @click.stop="emit('close')">✕</button>
         </div>
       </div>
@@ -74,6 +75,13 @@ const highlighted = computed(() => {
     return s
   }).join('\n')
 })
+
+function copyCode() {
+  const lines = displayCode.value.split('\n')
+  const start = lines.findIndex(l => l.startsWith('new '))
+  navigator.clipboard.writeText(lines.slice(start).join('\n'))
+}
+
 </script>
 
 <style scoped>
