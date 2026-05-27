@@ -528,7 +528,7 @@ useKeyboard({
       if (!store.selected.value.has(el.id)) return el
       return {
         ...el,
-        x: Math.max(0, Math.min(CW - el.w, el.x + dx)),
+        x: Math.max(0, el.x + dx),
         y: Math.max(0, Math.min(CH - el.h, el.y + dy)),
       }
     })
