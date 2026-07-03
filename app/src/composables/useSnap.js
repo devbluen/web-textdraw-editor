@@ -116,7 +116,7 @@ export function useSnap() {
   {
     if (snapMode.value !== 'element') {
       snapLines.value = []
-      return { w: snapV(el.w), h: snapV(el.h) }
+      return { w: el.w, h: el.h }
     }
 
     const others = allEls.filter(e => e.id !== el.id)
@@ -150,8 +150,8 @@ export function useSnap() {
     snapLines.value = lines
 
     return {
-      w: bestW ? Math.round(bestW.snap) : snapV(el.w),
-      h: bestH ? Math.round(bestH.snap) : snapV(el.h),
+      w: bestW ? Math.round(bestW.snap) : el.w,
+      h: bestH ? Math.round(bestH.snap) : el.h,
     }
   }
 

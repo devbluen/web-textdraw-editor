@@ -61,8 +61,8 @@ export function useDrag(els, selected, snapV, CW, CH, snapMode, snapElement, cle
       els.value = els.value.map(el => {
         const origin = dragOrigins.value[el.id]
         if (!origin) return el
-        const newX = snapV(origin.x + dx)
-        return { ...el, x: newX, y: snapV(origin.y + dy),
+        const newX = origin.x + dx
+        return { ...el, x: newX, y: origin.y + dy,
           textSizeX: el.align === 1 ? 0 : el.align === 2 ? newX : newX + el.w }
       })
     }

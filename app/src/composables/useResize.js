@@ -48,7 +48,11 @@ export function useResize(els, selected, snapV, snapResize, clearSnapLines)
     resizing.value = false
     resizeId.value = null
     clearSnapLines()
-    commit(els.value)
+    const r = (v) => Math.round(v * 10) / 10
+    commit(els.value.map(el => {
+      if (!selected.value.has(el.id)) return el
+      return { ...el, w: r(el.w), h: r(el.h) }
+    }))
   }
 
   return { resizing, resizeId, start, move, stop }

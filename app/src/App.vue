@@ -529,20 +529,24 @@ useKeyboard({
   clearSelection: () => { store.clearSelection(); refImages.clearSelection() },
   deleteRef: (id) => refImages.remove(id),
   nudgeEls: (dx, dy) => {
+    const r = (v) => Math.round(v * 10) / 10
     const next = store.els.value.map(el => {
       if (!store.selected.value.has(el.id)) return el
       return {
         ...el,
-        x: Math.max(0, el.x + dx),
-        y: Math.max(0, Math.min(CH - el.h, el.y + dy)),
+        x: Math.max(0, r(el.x + dx)),
+        y: Math.max(0, Math.min(CH - el.h, r(el.y + dy))),
       }
     })
-    store.commitEls(next)  // was store.commit
+    store.commitEls(next)
   },
-  nudgeRef: (id, dx, dy) => refImages.update(id, {
-    x: (selRefObj.value?.x ?? 0) + dx,
-    y: (selRefObj.value?.y ?? 0) + dy,
-  }),
+  nudgeRef: (id, dx, dy) => {
+    const r = (v) => Math.round(v * 10) / 10
+    refImages.update(id, {
+      x: r((selRefObj.value?.x ?? 0) + dx),
+      y: r((selRefObj.value?.y ?? 0) + dy),
+    })
+  },
   selRef: refImages.selRef,
   zoomBy: (delta) => {
     zoom.value = Math.min(6, Math.max(1, zoom.value + delta / 100))
