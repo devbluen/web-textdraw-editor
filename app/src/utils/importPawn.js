@@ -197,7 +197,7 @@ export function importPawn(code) {
     } else if (el.useBox && el.align === 1 && ty > 0) {
       el.h = Math.round(el.letterY / 0.1154)
       el.w = (ty / 1.08125) * INV_SX
-      el.x = (rawX * INV_SX) - (el.w / 2)
+      el.x = rawX * INV_SX
       el.textSizeX = 0
       el.textSizeY = ty
     } else if (el.useBox && tx > 0) {

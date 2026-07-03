@@ -207,17 +207,13 @@
     return Math.max(contentHeight, elHeight)
   })
 
-  // All offset tables are in units relative to fontSize (em-like).
-  // At runtime: pixel = tableValue * fontSize
-  // This ensures offsets stay correct regardless of letterY / scale.
-
-  const FONT_OFFSET_X = [
-  [0.0, -0.49, -0.98],
-  [-0.02, -0.50, -0.995],
-  [-0.2, -0.5, -0.99],
-  [0.0, -0.505, -1.007],
-  [0.0, 0.0, 0.0],
-]
+    const FONT_OFFSET_X = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+  ]
 
   const FONT_OFFSET_Y = [
     [-0.05, -0.05, -0.05],
@@ -246,10 +242,10 @@
   const FONT_WIDTH_SCALE = [1.15, 1, 1, 1.04, 1]
 
   const BOX_OFFSET_X = [
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
+    [0.0, -0.49, -0.98],
+    [-0.02, -0.50, -0.995],
+    [-0.2, -0.5, -0.99],
+    [0.0, -0.505, -1.007],
     [0.0, 0.0, 0.0],
   ]
 
@@ -298,7 +294,7 @@
     const align    = props.el.align ?? 0
 
     const fs = getFontSize(props.el)
-    const boxOffsetX  = isText2 ? (BOX_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
+    const boxOffsetX  = isText2 ? (BOX_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * Math.abs(w) : 0
     const boxOffsetY  = isText2 ? (BOX_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
     const boxOffsetW  = isText2 ? (BOX_OFFSET_W[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
     const boxOffsetH  = isText2 ? (BOX_OFFSET_H[props.el.font ?? 0]?.[align] ?? 0) * fs : 0

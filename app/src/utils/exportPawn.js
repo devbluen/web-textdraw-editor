@@ -15,7 +15,7 @@ function calcTextSize(el) {
 
 function scaleEl(el) {
   const sx = 640 / 592
-  const x = el.align === 1 ? (el.x + el.w / 2) * sx : el.x * sx
+  const x = el.x * sx
   return {
     ...el,
     x,
