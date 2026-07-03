@@ -207,74 +207,82 @@
     return Math.max(contentHeight, elHeight)
   })
 
+  // All offset tables are in units relative to fontSize (em-like).
+  // At runtime: pixel = tableValue * fontSize
+  // This ensures offsets stay correct regardless of letterY / scale.
+
   const FONT_OFFSET_X = [
-    [2.5, 3.5, 4.5],
-    [0.0, 0.6, -0.5],
-    [0.0, -1, -2],
-    [0.3, 0, -1.5],
-    [0, 0, 0],
-  ]
+  [0.0, -0.49, -0.98],
+  [-0.02, -0.50, -0.995],
+  [-0.2, -0.5, -0.99],
+  [0.0, -0.505, -1.007],
+  [0.0, 0.0, 0.0],
+]
 
   const FONT_OFFSET_Y = [
-    [3.4, 4.1, 3.5],
-    [2.4, 3.0, 2.3],
-    [1.0, 1.0, 1.0],
-    [1.0, 1.0, 1.0],
-    [0.0, 0.0, ],
-  ]
-
-  const FONT_LETTER_SPACING = [
-    [0.8, 0.8, 0.8],
-    [0.4, 0.4, 0.4],
-    [0, 0, 0],
+    [-0.05, -0.05, -0.05],
+    [-0.06, -0.06, -0.06],
     [-0.3, -0.3, -0.3],
-    [0, 0, 0],
-  ]
-
-  const FONT_WORD_SPACING = [
-    [0, 0, 0],
-    [2.8, 2.8, 2.8],
-    [-1, -1, -1],
-    [3, 3, 3],
-    [0, 0, 0],
-  ]
-
-  const FONT_WIDTH_SCALE = [0.94, 1, 1.04, 1.03, 1] 
-
-  const BOX_OFFSET_X = [
-    [-1.0, -5.1, -118],
-    [-1.0, -5.6, -118],
-    [-1.0, -6.8, -118],
-    [-1.0, -6.1, -118],
-    [0, 0, 0],
-  ]
-
-  const BOX_OFFSET_Y = [
-    [-5.0, -5.0, -5.0],
-    [-5.0, -5.0, -5.0],
-    [-3.0, -3.5, -3.5],
-    [-4.0, -3.5, -4],
-    [0, 0, 0],
-  ]
-
-  const BOX_OFFSET_W = [
-    [-2, 11.0, 3.0],
-    [-2, 11.2, 3.0],
-    [-2, 14.0, 3.0],
-    [-2, 13.0, 3.0],
-    [0, 0, 0],
-  ]
-
-  const BOX_OFFSET_H = [
-    [5.0, 4.0, 2.0],
-    [5.0, 4.0, 2.0],
-    [3.6, 4.0, 2.0],
-    [5.0, 4.0, 2.0],
+    [-0.3, -0.3, -0.3],
     [0.0, 0.0, 0.0],
   ]
 
+  const FONT_LETTER_SPACING = [
+    [-0.05, -0.05, -0.05],
+    [0.02, 0.02, 0.02],
+    [0.02, 0.02, 0.02],
+    [-0.03, -0.03, -0.03],
+    [0.0, 0.0, 0.0],
+  ]
+
+  const FONT_WORD_SPACING = [
+    [0.1, 0.1, 0.1],
+    [0.1, 0.1, 0.1],
+    [0.1, 0.1, 0.1],
+    [0.2, 0.2, 0.2],
+    [0.0, 0.0, 0.0],
+  ]
+
+  const FONT_WIDTH_SCALE = [1.15, 1, 1, 1.04, 1]
+
+  const BOX_OFFSET_X = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+  ]
+
+  const BOX_OFFSET_Y = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+  ]
+
+  const BOX_OFFSET_W = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+  ]
+
+  const BOX_OFFSET_H = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0],
+  ]
 
   const FONT_OFFSET_W = [0, 0, 0, 0, 0]
+
+  function getFontSize(el) {
+    const yScale = FONT_Y_SCALE[el.font] ?? 9.0
+    return Math.max(6, el.letterY * yScale * props.zoom)
+  }
 
   const isText = computed(() =>
     props.el.type === 'label'
@@ -288,33 +296,35 @@
     const isSprite = props.el.type === 'sprite'
     const isText2  = props.el.type === 'label'
     const align    = props.el.align ?? 0
-    const baselineShift = isText2 ? (FONT_BASELINE[props.el.font] ?? 0.72) : 0
 
-    const boxOffsetX  = isText2 ? (BOX_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * props.zoom : 0
-    const boxOffsetY  = isText2 ? (BOX_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * props.zoom : 0
-    const boxOffsetW  = isText2 ? (BOX_OFFSET_W[props.el.font ?? 0]?.[align] ?? 0) * props.zoom : 0
-    const boxOffsetH  = isText2 ? (BOX_OFFSET_H[props.el.font ?? 0]?.[align] ?? 0) * props.zoom : 0
-    const fontOffsetW = isText2 ? (FONT_OFFSET_W[props.el.font ?? 0] ?? 0) * props.zoom : 0
+    const fs = getFontSize(props.el)
+    const boxOffsetX  = isText2 ? (BOX_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
+    const boxOffsetY  = isText2 ? (BOX_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
+    const boxOffsetW  = isText2 ? (BOX_OFFSET_W[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
+    const boxOffsetH  = isText2 ? (BOX_OFFSET_H[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
+    const fontOffsetW = isText2 ? (FONT_OFFSET_W[props.el.font ?? 0] ?? 0) * fs : 0
 
     return {
       left:   snap(props.el.x * props.zoom) + (w < 0 ? w : 0) + (isBox ? -4 * props.zoom : 0) + boxOffsetX + 'px',
-      top:    snap(props.el.y * props.zoom) + (h < 0 ? h : 0) - (props.el.h * props.zoom * baselineShift * 0.3) + (isBox ? -7 * props.zoom : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + 'px',
+      top:    snap(props.el.y * props.zoom) + (h < 0 ? h : 0) + (isBox ? -7 * props.zoom : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + 'px',
       width: (isSprite ? Math.abs(w) : Math.max(Math.abs(w), 4 * props.zoom)) + (isBox ? 3 * props.zoom : 0) + fontOffsetW + boxOffsetW + 'px',
       height: (isSprite ? Math.abs(h) : Math.max(Math.abs(h), 2 * props.zoom)) + (isBox ? 12 * props.zoom : 0) + boxOffsetH + 'px',
       cursor: props.el.locked ? 'default' : 'move',
       zIndex: (props.el.layer || 0) + 10,
       transform: `scale(${w < 0 ? -1 : 1}, ${h < 0 ? -1 : 1})`,
       transformOrigin: 'center center',
-      letterSpacing: (FONT_LETTER_SPACING[props.el.font ?? 0]?.[align] ?? 0) * props.zoom + 'px',
-      wordSpacing:   (FONT_WORD_SPACING[props.el.font ?? 0]?.[align] ?? 0) * props.zoom + 'px',
+      letterSpacing: (FONT_LETTER_SPACING[props.el.font ?? 0]?.[align] ?? 0) * fs + 'px',
+      wordSpacing:   (FONT_WORD_SPACING[props.el.font ?? 0]?.[align] ?? 0) * fs + 'px',
     }
   })
 
   const fontOffsetStyle = computed(() => {
     const align = props.el.align ?? 0
     const isText2 = props.el.type === 'label'
-    const x = isText2 ? ((FONT_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0)) * props.zoom : 0
-    const y = isText2 ? ((FONT_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0)) * props.zoom : 0
+    const baseFs = FONT_Y_SCALE[props.el.font ?? 0] ?? 9.0
+    const xUnit = align === 0 ? baseFs * props.zoom : Math.abs(props.el.w) * props.zoom
+    const x = isText2 ? (FONT_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * xUnit : 0
+    const y = isText2 ? (FONT_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * baseFs * props.zoom : 0
     return { transform: `translate(${x}px, ${y}px)` }
   })
 
