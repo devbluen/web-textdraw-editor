@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { saveProject, listProjects, getProject, deleteProject, makeProjectId } from '../utils/projectsDb'
-import { useGistSync } from './useGistSync'
+import { useGistSync } from './UseGistSync'
 
 export function useProjects() {
   const projects = ref([])

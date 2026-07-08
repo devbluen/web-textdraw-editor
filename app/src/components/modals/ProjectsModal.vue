@@ -85,7 +85,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useGithubAuth } from '../../composables/useGithubAuth'
-import { useGistSync } from '../../composables/useGistSync'
+import { useGistSync } from '../../composables/UseGistSync'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
