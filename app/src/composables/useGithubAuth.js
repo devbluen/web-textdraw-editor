@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { startGithubLogin, handleGithubCallback, exchangeCodeForToken, fetchGithubUser } from '../utils/githubAuth'
-import { useGistSync } from './UseGistSync'
+import { useGistSync } from './useGistSync'
 
 const user = ref(JSON.parse(localStorage.getItem('gh_user') ?? 'null'))
 const authError = ref(null)
