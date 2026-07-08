@@ -312,9 +312,8 @@
     const yScale = FONT_Y_SCALE[props.el.font] ?? 9.0
     const numericOffsets = getNumericOffsets(props.el.font, props.el.align ?? 0, props.el.text || '')
     const fs = Math.max(6, props.el.letterY * yScale * props.zoom * numericOffsets.h)
-    const isBox = props.el.type === 'box'
-    const contentHeight = wrappedLines.value.length * fs * 1.3 + (isBox ? 12 * props.zoom : 0)
-    const elHeight = Math.max(Math.abs(props.el.h * props.zoom), 2) + (isBox ? 12 * props.zoom : 0)
+    const contentHeight = wrappedLines.value.length * fs * 1.3
+    const elHeight = Math.max(Math.abs(props.el.h * props.zoom), 2)
     return Math.max(contentHeight, elHeight)
   })
 
@@ -415,10 +414,10 @@
     const fontOffsetW = isText2 ? (FONT_OFFSET_W[props.el.font ?? 0] ?? 0) * fs : 0
 
     return {
-      left: snap(props.el.x * props.zoom) + (w < 0 ? w : 0) + (isBox ? -4 * props.zoom : 0) + boxOffsetX + 'px',
-      top: snap(props.el.y * props.zoom) + (h < 0 ? h : 0) + (isBox ? -7 * props.zoom : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + 'px',
-      width: (isSprite ? Math.abs(w) : Math.max(Math.abs(w), 4 * props.zoom)) + (isBox ? 3 * props.zoom : 0) + fontOffsetW + boxOffsetW + numericOffsetW + 'px',
-      height: (isSprite ? Math.abs(h) : Math.max(Math.abs(h), 2 * props.zoom)) + (isBox ? 12 * props.zoom : 0) + boxOffsetH + 'px',
+      left: snap(props.el.x * props.zoom) + (w < 0 ? w : 0) + boxOffsetX + 'px',
+      top: snap(props.el.y * props.zoom) + (h < 0 ? h : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + 'px',
+      width: Math.abs(w) + fontOffsetW + boxOffsetW + numericOffsetW + 'px',
+      height: Math.abs(h) + boxOffsetH + 'px',
       cursor: props.el.locked ? 'default' : 'move',
       zIndex: (props.el.layer || 0) + 10,
       transform: `scale(${w < 0 ? -1 : 1}, ${h < 0 ? -1 : 1})`,
