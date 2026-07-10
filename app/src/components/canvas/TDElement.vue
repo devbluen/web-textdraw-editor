@@ -383,6 +383,11 @@
     [0.0, 0.0, 0.0],
   ]
 
+  const BOX_FONT_OFFSET_X = -1.5
+  const BOX_FONT_OFFSET_Y = -5
+  const BOX_FONT_OFFSET_W = 3.3
+  const BOX_FONT_OFFSET_H = 1.5
+
   const FONT_OFFSET_W = [0, 0, 0, 0, 0]
 
   function getFontSize(el) {
@@ -413,11 +418,16 @@
     const boxOffsetH = isText2 ? (BOX_OFFSET_H[props.el.font ?? 0]?.[align] ?? 0) * fs : 0
     const fontOffsetW = isText2 ? (FONT_OFFSET_W[props.el.font ?? 0] ?? 0) * fs : 0
 
+    const absW = Math.abs(w)
+    const absH = Math.abs(h)
+    const boxFontOffsetX = isBox ? BOX_FONT_OFFSET_X * props.zoom : 0
+    const boxFontOffsetY = isBox ? BOX_FONT_OFFSET_Y * props.zoom : 0
+
     return {
-      left: snap(props.el.x * props.zoom) + (w < 0 ? w : 0) + boxOffsetX + 'px',
-      top: snap(props.el.y * props.zoom) + (h < 0 ? h : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + 'px',
-      width: Math.abs(w) + fontOffsetW + boxOffsetW + numericOffsetW + 'px',
-      height: Math.abs(h) + boxOffsetH + 'px',
+      left: snap(props.el.x * props.zoom) + (w < 0 ? w : 0) + boxOffsetX + boxFontOffsetX + 'px',
+      top: snap(props.el.y * props.zoom) + (h < 0 ? h : 0) + (isSprite ? -3 * props.zoom : 0) + boxOffsetY + boxFontOffsetY + 'px',
+      width: absW + fontOffsetW + boxOffsetW + numericOffsetW + (isBox ? BOX_FONT_OFFSET_W * props.zoom : 0) + 'px',
+      height: absH + boxOffsetH + (isBox ? BOX_FONT_OFFSET_H * props.zoom : 0) + 'px',
       cursor: props.el.locked ? 'default' : 'move',
       zIndex: (props.el.layer || 0) + 10,
       transform: `scale(${w < 0 ? -1 : 1}, ${h < 0 ? -1 : 1})`,
@@ -430,12 +440,17 @@
   const fontOffsetStyle = computed(() => {
     const align = props.el.align ?? 0
     const isText2 = props.el.type === 'label'
+    const isBox = props.el.type === 'box'
     const baseFs = FONT_Y_SCALE[props.el.font ?? 0] ?? 9.0
     const xUnit = align === 0 ? baseFs * props.zoom : Math.abs(props.el.w) * props.zoom
     const numericOffsets = isText2 ? getNumericOffsets(props.el.font ?? 0, align, props.el.text || '') : null
     const fs = isText2 ? getFontSize(props.el) : 0
-    const x = isText2 ? (FONT_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * xUnit + (numericOffsets.x ?? 0) * fs : 0
-    const y = isText2 ? (FONT_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * baseFs * props.zoom + (numericOffsets.y ?? 0) * fs : 0
+    const x = isText2
+      ? (FONT_OFFSET_X[props.el.font ?? 0]?.[align] ?? 0) * xUnit + (numericOffsets.x ?? 0) * fs
+      : 0
+    const y = isText2
+      ? (FONT_OFFSET_Y[props.el.font ?? 0]?.[align] ?? 0) * baseFs * props.zoom + (numericOffsets.y ?? 0) * fs
+      : 0
     return { transform: `translate(${x}px, ${y}px)` }
   })
 
