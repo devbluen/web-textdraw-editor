@@ -168,6 +168,8 @@ import { useBgImage } from './composables/useBgImage'
 import { useRefImages } from './composables/useRefImages'
 import { useValidation } from './composables/useValidation'
 import { useKeyboard } from './composables/useKeyboard'
+import { useProjects } from './composables/useProjects'
+import { useGithubAuth } from './composables/useGithubAuth'
 
 
 import { exportPawn } from './utils/exportPawn'
@@ -213,6 +215,9 @@ const notifs     = ref([])
 const copiedStyle = ref(null)
 const canvas     = ref(null)
 const canvasWrap = ref(null)
+const projectsApi = useProjects()
+const githubAuth = useGithubAuth()
+const showProjects = ref(false)
 
 const selRefObj = computed(() =>
   refImages.selRef.value
